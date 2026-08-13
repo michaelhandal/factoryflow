@@ -371,3 +371,42 @@
   font-size: 0.78rem;
   color: var(--color-text-secondary);
 }
+
+/* --- Line efficiency banner --- */
+
+.line-builder__summary-row {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.line-builder__summary-row .bottleneck-banner {
+  flex: 1;
+  min-width: 280px;
+  margin-bottom: 0;
+}
+
+.efficiency-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.efficiency-banner__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.efficiency-banner__value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}

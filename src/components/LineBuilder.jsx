@@ -1,6 +1,7 @@
 // src/components/LineBuilder.jsx
 import StationCard from './StationCard';
 import { identifyBottleneck } from '../calculations/bottleneck';
+import { calculateLineEfficiency } from '../calculations/lineEfficiency';
 
 // Renders the full list of workstations plus an "Add Station" button.
 // Owns no state itself — it receives the line and reports changes upward,
@@ -8,6 +9,7 @@ import { identifyBottleneck } from '../calculations/bottleneck';
 
 function LineBuilder({ line, onLineChange, requiredRatePerHour }) {
   const bottleneck = identifyBottleneck(line);
+  const lineEfficiency = calculateLineEfficiency(line);
 
   function handleStationChange(updatedStation) {
     const newLine = line.map((s) => (s.id === updatedStation.id ? updatedStation : s));
@@ -54,15 +56,22 @@ function LineBuilder({ line, onLineChange, requiredRatePerHour }) {
         </button>
       </div>
 
-      {bottleneck && (
-        <div className="bottleneck-banner">
-          <span className="bottleneck-banner__label">Bottleneck</span>
-          <span className="bottleneck-banner__station">{bottleneck.name}</span>
-          <span className="bottleneck-banner__detail">
-            {bottleneck.effectiveCapacityPerHour.toFixed(1)} units/hr — this caps the entire line's output
-          </span>
+      <div className="line-builder__summary-row">
+        {bottleneck && (
+          <div className="bottleneck-banner">
+            <span className="bottleneck-banner__label">Bottleneck</span>
+            <span className="bottleneck-banner__station">{bottleneck.name}</span>
+            <span className="bottleneck-banner__detail">
+              {bottleneck.effectiveCapacityPerHour.toFixed(1)} units/hr — this caps the entire line's output
+            </span>
+          </div>
+        )}
+
+        <div className="efficiency-banner">
+          <span className="efficiency-banner__label">Line Efficiency</span>
+          <span className="efficiency-banner__value">{(lineEfficiency * 100).toFixed(1)}%</span>
         </div>
-      )}
+      </div>
 
       <div className="line-builder__list">
         {line.map((station, index) => (
