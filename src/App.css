@@ -195,3 +195,140 @@
   opacity: 0.3;
   cursor: not-allowed;
 }
+
+/* --- Capacity readout --- */
+
+.station-card__capacity-readout {
+  display: flex;
+  gap: var(--space-lg);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
+  padding: var(--space-xs) 0;
+}
+
+.station-card__capacity-readout strong {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* --- Bottleneck banner --- */
+
+.bottleneck-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.bottleneck-banner__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.bottleneck-banner__station {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.bottleneck-banner__detail {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+/* --- Bottleneck station card highlight --- */
+
+.station-card--bottleneck {
+  border-color: var(--color-danger);
+}
+
+.station-card__bottleneck-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-danger);
+  background-color: rgba(239, 68, 68, 0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* --- Takt Time Panel --- */
+
+.takt-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.takt-panel h2 {
+  margin-bottom: var(--space-md);
+}
+
+.takt-panel__inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.takt-panel__result {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+}
+
+.takt-panel__result-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.takt-panel__result-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.takt-panel__warning {
+  background-color: rgba(234, 179, 8, 0.1);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  font-size: 0.9rem;
+}
+
+.takt-panel__warning ul {
+  margin-top: var(--space-sm);
+  padding-left: var(--space-lg);
+}
+
+.takt-panel__warning li {
+  margin-bottom: 4px;
+}
+
+.takt-panel__ok {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  font-size: 0.9rem;
+  color: var(--color-success);
+}

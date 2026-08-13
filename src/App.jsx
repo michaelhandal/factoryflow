@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './App.css';
 import { createDefaultLine } from './data/defaultLine';
 import LineBuilder from './components/LineBuilder';
+import TaktTimePanel from './components/TaktTimePanel';
 
 function App() {
   // The production line lives here, at the top of the app, so that later
@@ -20,6 +21,7 @@ function App() {
       </header>
 
       <main className="app-main">
+        <TaktTimePanel line={line} />
         <LineBuilder line={line} onLineChange={setLine} />
       </main>
 

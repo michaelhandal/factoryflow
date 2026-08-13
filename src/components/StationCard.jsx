@@ -1,10 +1,14 @@
 // src/components/StationCard.jsx
+import { calculateEffectiveCapacity, calculateTheoreticalCapacity } from '../calculations/capacity';
 
 // Renders ONE workstation as an editable card.
 // This component has no knowledge of the rest of the line — it just displays
 // the station it's given, and reports changes back up via onChange/onDelete/onMove.
 
-function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast }) {
+function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast, isBottleneck }) {
+  const theoreticalCapacity = calculateTheoreticalCapacity(station);
+  const effectiveCapacity = calculateEffectiveCapacity(station);
+
   function handleFieldChange(field, rawValue) {
     const isNumericField = field !== 'name' && field !== 'processType';
     const value = isNumericField ? Number(rawValue) : rawValue;
@@ -12,7 +16,7 @@ function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirs
   }
 
   return (
-    <div className="station-card">
+    <div className={`station-card ${isBottleneck ? 'station-card--bottleneck' : ''}`}>
       <div className="station-card__header">
         <div className="station-card__move-controls">
           <button
@@ -39,6 +43,7 @@ function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirs
           value={station.name}
           onChange={(e) => handleFieldChange('name', e.target.value)}
         />
+        {isBottleneck && <span className="station-card__bottleneck-badge">BOTTLENECK</span>}
         <button
           className="station-card__delete-btn"
           onClick={() => onDelete(station.id)}
@@ -46,6 +51,11 @@ function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirs
         >
           ✕
         </button>
+      </div>
+
+      <div className="station-card__capacity-readout">
+        <span>Theoretical capacity: <strong>{theoreticalCapacity.toFixed(1)}</strong> units/hr</span>
+        <span>Effective capacity: <strong>{effectiveCapacity.toFixed(1)}</strong> units/hr</span>
       </div>
 
       <div className="station-card__field">

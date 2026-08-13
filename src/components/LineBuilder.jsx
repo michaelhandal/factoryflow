@@ -1,11 +1,14 @@
 // src/components/LineBuilder.jsx
 import StationCard from './StationCard';
+import { identifyBottleneck } from '../calculations/bottleneck';
 
 // Renders the full list of workstations plus an "Add Station" button.
 // Owns no state itself — it receives the line and reports changes upward,
 // so App.jsx remains the single source of truth for the production line.
 
 function LineBuilder({ line, onLineChange }) {
+  const bottleneck = identifyBottleneck(line);
+
   function handleStationChange(updatedStation) {
     const newLine = line.map((s) => (s.id === updatedStation.id ? updatedStation : s));
     onLineChange(newLine);
@@ -33,16 +36,11 @@ function LineBuilder({ line, onLineChange }) {
     onLineChange([...line, newStation]);
   }
 
-  // Swaps a station with its neighbor in the given direction.
-  // direction is either -1 (move up / earlier in the line) or +1 (move down / later).
   function handleMoveStation(index, direction) {
     const targetIndex = index + direction;
-
-    // Guard against moving past either end of the array.
     if (targetIndex < 0 || targetIndex >= line.length) return;
 
     const newLine = [...line];
-    // Swap the two entries.
     [newLine[index], newLine[targetIndex]] = [newLine[targetIndex], newLine[index]];
     onLineChange(newLine);
   }
@@ -56,6 +54,16 @@ function LineBuilder({ line, onLineChange }) {
         </button>
       </div>
 
+      {bottleneck && (
+        <div className="bottleneck-banner">
+          <span className="bottleneck-banner__label">Bottleneck</span>
+          <span className="bottleneck-banner__station">{bottleneck.name}</span>
+          <span className="bottleneck-banner__detail">
+            {bottleneck.effectiveCapacityPerHour.toFixed(1)} units/hr — this caps the entire line's output
+          </span>
+        </div>
+      )}
+
       <div className="line-builder__list">
         {line.map((station, index) => (
           <StationCard
@@ -67,6 +75,7 @@ function LineBuilder({ line, onLineChange }) {
             onMoveDown={() => handleMoveStation(index, 1)}
             isFirst={index === 0}
             isLast={index === line.length - 1}
+            isBottleneck={bottleneck && station.id === bottleneck.id}
           />
         ))}
       </div>
