@@ -1,6 +1,7 @@
 // src/components/StationCard.jsx
 import { calculateEffectiveCapacity, calculateTheoreticalCapacity } from '../calculations/capacity';
 import { calculateUtilization, classifyUtilization } from '../calculations/utilization';
+import { calculateOEE } from '../calculations/oee';
 
 // Renders ONE workstation as an editable card.
 // This component has no knowledge of the rest of the line — it just displays
@@ -18,6 +19,7 @@ function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirs
   const effectiveCapacity = calculateEffectiveCapacity(station);
   const utilization = calculateUtilization(station, requiredRatePerHour);
   const utilizationStatus = classifyUtilization(utilization);
+  const { oee, availability, performance, quality } = calculateOEE(station);
 
   function handleFieldChange(field, rawValue) {
     const isNumericField = field !== 'name' && field !== 'processType';
@@ -77,6 +79,13 @@ function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirs
         </div>
         <span className="station-card__utilization-label">
           {(utilization * 100).toFixed(0)}% — {UTILIZATION_LABELS[utilizationStatus]}
+        </span>
+      </div>
+
+      <div className="station-card__oee">
+        <span className="station-card__oee-value">OEE: <strong>{(oee * 100).toFixed(1)}%</strong></span>
+        <span className="station-card__oee-breakdown">
+          (Availability {(availability * 100).toFixed(0)}% × Performance {(performance * 100).toFixed(0)}% × Quality {(quality * 100).toFixed(1)}%)
         </span>
       </div>
 

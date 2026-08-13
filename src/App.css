@@ -410,3 +410,28 @@
   font-weight: 700;
   color: var(--color-accent);
 }
+
+/* --- OEE readout --- */
+
+.station-card__oee {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  margin-bottom: var(--space-md);
+  padding: var(--space-xs) 0;
+}
+
+.station-card__oee-value {
+  color: var(--color-text-primary);
+}
+
+.station-card__oee-value strong {
+  color: var(--color-accent);
+}
+
+.station-card__oee-breakdown {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
