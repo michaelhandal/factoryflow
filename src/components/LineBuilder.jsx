@@ -6,7 +6,7 @@ import { identifyBottleneck } from '../calculations/bottleneck';
 // Owns no state itself — it receives the line and reports changes upward,
 // so App.jsx remains the single source of truth for the production line.
 
-function LineBuilder({ line, onLineChange }) {
+function LineBuilder({ line, onLineChange, requiredRatePerHour }) {
   const bottleneck = identifyBottleneck(line);
 
   function handleStationChange(updatedStation) {
@@ -76,6 +76,7 @@ function LineBuilder({ line, onLineChange }) {
             isFirst={index === 0}
             isLast={index === line.length - 1}
             isBottleneck={bottleneck && station.id === bottleneck.id}
+            requiredRatePerHour={requiredRatePerHour}
           />
         ))}
       </div>

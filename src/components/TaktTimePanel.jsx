@@ -1,15 +1,13 @@
 // src/components/TaktTimePanel.jsx
-import { useState } from 'react';
 import { calculateTaktTime, findTaktTimeProblemStations } from '../calculations/taktTime';
 
 // Lets the user enter available production time (in hours, for convenience)
 // and customer demand (units), then shows the resulting takt time and
 // flags any stations whose cycle time exceeds it.
+// State now lives in App.jsx so other components (like utilization) can
+// also use availableHours/customerDemand.
 
-function TaktTimePanel({ line }) {
-  const [availableHours, setAvailableHours] = useState(8);
-  const [customerDemand, setCustomerDemand] = useState(480);
-
+function TaktTimePanel({ line, availableHours, setAvailableHours, customerDemand, setCustomerDemand }) {
   const availableSeconds = availableHours * 3600;
   const taktTimeSeconds = calculateTaktTime(availableSeconds, customerDemand);
   const problemStations = findTaktTimeProblemStations(line, taktTimeSeconds);

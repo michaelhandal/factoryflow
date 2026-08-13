@@ -1,13 +1,23 @@
 // src/components/StationCard.jsx
 import { calculateEffectiveCapacity, calculateTheoreticalCapacity } from '../calculations/capacity';
+import { calculateUtilization, classifyUtilization } from '../calculations/utilization';
 
 // Renders ONE workstation as an editable card.
 // This component has no knowledge of the rest of the line — it just displays
 // the station it's given, and reports changes back up via onChange/onDelete/onMove.
 
-function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast, isBottleneck }) {
+const UTILIZATION_LABELS = {
+  underutilized: 'Underutilized',
+  healthy: 'Healthy',
+  high: 'High utilization',
+  overloaded: 'Capacity problem',
+};
+
+function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast, isBottleneck, requiredRatePerHour }) {
   const theoreticalCapacity = calculateTheoreticalCapacity(station);
   const effectiveCapacity = calculateEffectiveCapacity(station);
+  const utilization = calculateUtilization(station, requiredRatePerHour);
+  const utilizationStatus = classifyUtilization(utilization);
 
   function handleFieldChange(field, rawValue) {
     const isNumericField = field !== 'name' && field !== 'processType';
@@ -56,6 +66,18 @@ function StationCard({ station, onChange, onDelete, onMoveUp, onMoveDown, isFirs
       <div className="station-card__capacity-readout">
         <span>Theoretical capacity: <strong>{theoreticalCapacity.toFixed(1)}</strong> units/hr</span>
         <span>Effective capacity: <strong>{effectiveCapacity.toFixed(1)}</strong> units/hr</span>
+      </div>
+
+      <div className={`station-card__utilization station-card__utilization--${utilizationStatus}`}>
+        <div className="station-card__utilization-bar-track">
+          <div
+            className="station-card__utilization-bar-fill"
+            style={{ width: `${Math.min(utilization * 100, 100)}%` }}
+          />
+        </div>
+        <span className="station-card__utilization-label">
+          {(utilization * 100).toFixed(0)}% — {UTILIZATION_LABELS[utilizationStatus]}
+        </span>
       </div>
 
       <div className="station-card__field">
