@@ -1,7 +1,9 @@
 // src/components/SimulationPanel.jsx
+import WipIndicator from './WipIndicator';
 
 // Displays simulation controls (Start/Pause/Reset/Speed) plus a live
-// per-station breakdown of what's queued vs. being processed right now.
+// per-station breakdown of what's queued (visualized as blocks) vs.
+// being processed right now.
 
 function formatSimTime(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);
@@ -55,13 +57,13 @@ function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pa
           const s = simState.stations[station.id] || { queue: 0, inProgress: [] };
           return (
             <div className="simulation-panel__station-row" key={station.id}>
-              <span className="simulation-panel__station-name">{station.name}</span>
-              <span className="simulation-panel__station-detail">
-                Waiting: <strong>{s.queue}</strong>
-              </span>
-              <span className="simulation-panel__station-detail">
-                Processing: <strong>{s.inProgress.length}</strong> / {station.machines} machines busy
-              </span>
+              <div className="simulation-panel__station-row-header">
+                <span className="simulation-panel__station-name">{station.name}</span>
+                <span className="simulation-panel__station-detail">
+                  Processing: <strong>{s.inProgress.length}</strong> / {station.machines} machines busy
+                </span>
+              </div>
+              <WipIndicator queueCount={s.queue} />
             </div>
           );
         })}

@@ -4,8 +4,8 @@ import { calculateUtilization, classifyUtilization } from '../calculations/utili
 import { identifyBottleneck } from '../calculations/bottleneck';
 
 // A horizontal, connected diagram of the production line: one box per
-// station, linked by arrows, color-coded by utilization status. This is
-// the "at a glance" view — detailed editing still happens in LineBuilder.
+// station, linked by arrows, color-coded by utilization status, with a
+// live WIP queue indicator pulled from the running simulation (if any).
 
 const STATUS_LABELS = {
   underutilized: 'Underutilized',
@@ -14,7 +14,7 @@ const STATUS_LABELS = {
   overloaded: 'Overloaded',
 };
 
-function FactoryDiagram({ line, requiredRatePerHour }) {
+function FactoryDiagram({ line, requiredRatePerHour, simState }) {
   const bottleneck = identifyBottleneck(line);
 
   if (!line || line.length === 0) {
@@ -34,6 +34,7 @@ function FactoryDiagram({ line, requiredRatePerHour }) {
           const utilization = calculateUtilization(station, requiredRatePerHour);
           const status = classifyUtilization(utilization);
           const isBottleneck = bottleneck && station.id === bottleneck.id;
+          const queueCount = simState?.stations?.[station.id]?.queue ?? 0;
 
           return (
             <div className="factory-diagram__unit" key={station.id}>
@@ -55,6 +56,11 @@ function FactoryDiagram({ line, requiredRatePerHour }) {
                 <div className="factory-diagram__box-stat">
                   {station.machines} machine{station.machines !== 1 ? 's' : ''}
                 </div>
+                {queueCount > 0 && (
+                  <div className="factory-diagram__box-wip">
+                    WIP queue: <strong>{queueCount}</strong>
+                  </div>
+                )}
                 <div className={`factory-diagram__box-status factory-diagram__box-status--${status}`}>
                   {STATUS_LABELS[status]} ({(utilization * 100).toFixed(0)}%)
                 </div>

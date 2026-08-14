@@ -44,7 +44,11 @@ function App() {
           customerDemand={customerDemand}
           setCustomerDemand={setCustomerDemand}
         />
-        <FactoryDiagram line={line} requiredRatePerHour={requiredRatePerHour} />
+        <FactoryDiagram
+          line={line}
+          requiredRatePerHour={requiredRatePerHour}
+          simState={simulation.simState}
+        />
         <SimulationPanel
           line={line}
           simState={simulation.simState}
