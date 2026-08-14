@@ -37,23 +37,23 @@ export function calculateAverageCycleTime(line) {
  * buildDashboardMetrics
  *
  * Aggregates all line-level metrics into one object for the dashboard.
- * WIP and cost-per-unit are intentionally left null here — they require
- * the simulation engine (Phase 8) and cost model (Phase 11), which don't
- * exist yet. Showing a placeholder is more honest than faking a number.
+ * `wip` now comes from the live simulation engine (Phase 8). `costPerUnit`
+ * is still a placeholder — it's added in Phase 11 (Cost Model).
  *
  * @param {object[]} line - array of workstation objects
+ * @param {number|null} wip - current work-in-progress from the simulation, or null if unavailable
  * @returns {object} dashboard metrics
  */
-export function buildDashboardMetrics(line) {
+export function buildDashboardMetrics(line, wip = null) {
   const bottleneck = identifyBottleneck(line);
 
   return {
     throughput: calculateThroughput(line),
-    productionCapacity: calculateThroughput(line), // same basis for now — see note above
+    productionCapacity: calculateThroughput(line), // same basis for now — see Phase 7 note
     lineEfficiency: calculateLineEfficiency(line),
     oee: calculateLineOEE(line),
     bottleneckName: bottleneck ? bottleneck.name : '—',
-    wip: null, // added in Phase 8 (Simulation Engine)
+    wip,
     averageCycleTime: calculateAverageCycleTime(line),
     costPerUnit: null, // added in Phase 11 (Cost Model)
   };

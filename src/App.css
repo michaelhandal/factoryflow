@@ -653,3 +653,110 @@
   font-weight: 500;
   color: var(--color-text-secondary);
 }
+
+/* --- Simulation Panel --- */
+
+.simulation-panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.simulation-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.simulation-panel__controls {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.simulation-panel__speed-select {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  padding: var(--space-sm) var(--space-sm);
+  font-size: 0.9rem;
+}
+
+.simulation-panel__stats {
+  display: flex;
+  gap: var(--space-xl);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.simulation-panel__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.simulation-panel__stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.simulation-panel__stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.simulation-panel__stations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.simulation-panel__station-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  flex-wrap: wrap;
+}
+
+.simulation-panel__station-name {
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.simulation-panel__station-detail {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.simulation-panel__station-detail strong {
+  color: var(--color-text-primary);
+}

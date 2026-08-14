@@ -6,7 +6,9 @@ import LineBuilder from './components/LineBuilder';
 import TaktTimePanel from './components/TaktTimePanel';
 import FactoryDiagram from './components/FactoryDiagram';
 import Dashboard from './components/Dashboard';
+import SimulationPanel from './components/SimulationPanel';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
+import { useSimulation } from './hooks/useSimulation';
 
 function App() {
   // The production line lives here, at the top of the app, so that later
@@ -22,6 +24,8 @@ function App() {
 
   const requiredRatePerHour = calculateRequiredRatePerHour(customerDemand, availableHours);
 
+  const simulation = useSimulation(line, requiredRatePerHour);
+
   return (
     <>
       <header className="app-header">
@@ -32,7 +36,7 @@ function App() {
       </header>
 
       <main className="app-main">
-        <Dashboard line={line} />
+        <Dashboard line={line} wip={simulation.totalWIP} />
         <TaktTimePanel
           line={line}
           availableHours={availableHours}
@@ -41,6 +45,17 @@ function App() {
           setCustomerDemand={setCustomerDemand}
         />
         <FactoryDiagram line={line} requiredRatePerHour={requiredRatePerHour} />
+        <SimulationPanel
+          line={line}
+          simState={simulation.simState}
+          isRunning={simulation.isRunning}
+          speed={simulation.speed}
+          setSpeed={simulation.setSpeed}
+          start={simulation.start}
+          pause={simulation.pause}
+          reset={simulation.reset}
+          totalWIP={simulation.totalWIP}
+        />
         <LineBuilder
           line={line}
           onLineChange={setLine}

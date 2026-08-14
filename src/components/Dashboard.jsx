@@ -17,8 +17,8 @@ function MetricCard({ label, value, unit, tone }) {
   );
 }
 
-function Dashboard({ line }) {
-  const metrics = buildDashboardMetrics(line);
+function Dashboard({ line, wip }) {
+  const metrics = buildDashboardMetrics(line, wip);
 
   return (
     <div className="dashboard">
@@ -65,7 +65,7 @@ function Dashboard({ line }) {
         />
       </div>
       <p className="dashboard__note">
-        WIP and Cost per Unit will become live once the Simulation Engine and Cost Model are added in later phases.
+        Cost per Unit will become live once the Cost Model is added in a later phase.
       </p>
     </div>
   );
