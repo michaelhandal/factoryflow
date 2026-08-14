@@ -591,3 +591,65 @@
 .factory-diagram__legend-swatch--overloaded {
   background-color: var(--color-danger);
 }
+
+/* --- Dashboard --- */
+
+.dashboard {
+  margin-bottom: var(--space-xl);
+}
+
+.dashboard h2 {
+  margin-bottom: var(--space-md);
+}
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+
+.dashboard__note {
+  margin-top: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.metric-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.metric-card--danger {
+  border-color: var(--color-danger);
+}
+
+.metric-card__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.metric-card__value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.metric-card--danger .metric-card__value {
+  color: var(--color-danger);
+  font-size: 1.3rem;
+}
+
+.metric-card__unit {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}

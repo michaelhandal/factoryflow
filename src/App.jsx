@@ -5,6 +5,7 @@ import { createDefaultLine } from './data/defaultLine';
 import LineBuilder from './components/LineBuilder';
 import TaktTimePanel from './components/TaktTimePanel';
 import FactoryDiagram from './components/FactoryDiagram';
+import Dashboard from './components/Dashboard';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       </header>
 
       <main className="app-main">
+        <Dashboard line={line} />
         <TaktTimePanel
           line={line}
           availableHours={availableHours}
