@@ -19,27 +19,31 @@ function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pa
     : 1;
 
   return (
-    <div className="simulation-panel">
-      <div className="simulation-panel__header">
-        <h2>Production Simulation</h2>
-        <div className="simulation-panel__controls">
-          {isRunning ? (
-            <button className="btn-secondary" onClick={pause}>Pause</button>
-          ) : (
-            <button className="btn-primary" onClick={start}>Start</button>
-          )}
-          <button className="btn-secondary" onClick={reset}>Reset</button>
-          <select
-            className="simulation-panel__speed-select"
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-          >
-            <option value={1}>1x speed</option>
-            <option value={2}>2x speed</option>
-            <option value={5}>5x speed</option>
-            <option value={10}>10x speed</option>
-          </select>
-        </div>
+    <section id="simulation" className="simulation-panel">
+      
+      {/* Replaced the missing SectionHeader component with standard HTML */}
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h2 style={{ margin: '0 0 0.5rem 0' }}>Production Simulation</h2>
+        <p style={{ margin: 0, color: '#666' }}>Watch units flow through the line in real time, including queuing, defects, and WIP accumulation.</p>
+      </div>
+
+      <div className="simulation-panel__controls">
+        {isRunning ? (
+          <button className="btn-secondary" onClick={pause}>Pause</button>
+        ) : (
+          <button className="btn-primary" onClick={start}>Start</button>
+        )}
+        <button className="btn-secondary" onClick={reset}>Reset</button>
+        <select
+          className="simulation-panel__speed-select"
+          value={speed}
+          onChange={(e) => setSpeed(Number(e.target.value))}
+        >
+          <option value={1}>1x speed</option>
+          <option value={2}>2x speed</option>
+          <option value={5}>5x speed</option>
+          <option value={10}>10x speed</option>
+        </select>
       </div>
 
       <div className="simulation-panel__stats">
@@ -88,7 +92,7 @@ function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pa
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }
 

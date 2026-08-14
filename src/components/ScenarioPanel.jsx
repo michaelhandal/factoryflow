@@ -2,15 +2,12 @@
 import { useState, useEffect } from 'react';
 import { loadScenarios, saveScenario, deleteScenario } from '../utils/scenarioStorage';
 import { calculateScenarioMetrics } from '../calculations/scenarioMetrics';
-
-// Lets the user save the current line as a named scenario, and compares
-// all saved scenarios (plus the live current line) in one table.
+import SectionHeader from './SectionHeader';
 
 function ScenarioPanel({ line }) {
   const [scenarios, setScenarios] = useState([]);
   const [newName, setNewName] = useState('');
 
-  // Load saved scenarios once on mount.
   useEffect(() => {
     setScenarios(loadScenarios());
   }, []);
@@ -30,8 +27,11 @@ function ScenarioPanel({ line }) {
   const currentMetrics = calculateScenarioMetrics(line);
 
   return (
-    <div className="scenario-panel">
-      <h2>Scenario Comparison</h2>
+    <section id="scenarios" className="scenario-panel">
+      <SectionHeader
+        title="Scenario Comparison"
+        description="Save named snapshots of your line configuration and compare their metrics side by side."
+      />
 
       <div className="scenario-panel__save-row">
         <input
@@ -98,7 +98,7 @@ function ScenarioPanel({ line }) {
           No saved scenarios yet — name and save your current line above to start comparing configurations.
         </p>
       )}
-    </div>
+    </section>
   );
 }
 

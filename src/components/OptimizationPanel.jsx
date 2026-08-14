@@ -1,4 +1,5 @@
 // src/components/OptimizationPanel.jsx
+import SectionHeader from './SectionHeader';
 import { useState } from 'react';
 import { runOptimization, OBJECTIVES } from '../optimization/optimizer';
 import { calculateThroughput } from '../calculations/dashboard';
@@ -65,8 +66,11 @@ function OptimizationPanel({ line, onApply }) {
   };
 
   return (
-    <div className="optimization-panel">
-      <h2>Optimize Factory</h2>
+    <section id="optimization" className="optimization-panel">
+      <SectionHeader
+        title="Optimize Factory"
+        description="Choose an objective and let the heuristic optimizer recommend specific, explained changes to your line."
+      />
 
       <div className="optimization-panel__controls">
         <select
@@ -173,7 +177,7 @@ function OptimizationPanel({ line, onApply }) {
           )}
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

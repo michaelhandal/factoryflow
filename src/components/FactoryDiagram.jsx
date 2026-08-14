@@ -2,10 +2,7 @@
 import { calculateEffectiveCapacity } from '../calculations/capacity';
 import { calculateUtilization, classifyUtilization } from '../calculations/utilization';
 import { identifyBottleneck } from '../calculations/bottleneck';
-
-// A horizontal, connected diagram of the production line: one box per
-// station, linked by arrows, color-coded by utilization status, with a
-// live WIP queue indicator pulled from the running simulation (if any).
+import SectionHeader from './SectionHeader';
 
 const STATUS_LABELS = {
   underutilized: 'Underutilized',
@@ -19,15 +16,18 @@ function FactoryDiagram({ line, requiredRatePerHour, simState }) {
 
   if (!line || line.length === 0) {
     return (
-      <div className="factory-diagram factory-diagram--empty">
+      <section id="factory-diagram" className="factory-diagram factory-diagram--empty">
         No stations yet — add one in the Production Line Builder below.
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="factory-diagram">
-      <h2>Visual Factory</h2>
+    <section id="factory-diagram" className="factory-diagram">
+      <SectionHeader
+        title="Visual Factory"
+        description="A connected view of the whole line — color-coded by utilization, with the bottleneck highlighted."
+      />
       <div className="factory-diagram__track">
         {line.map((station, index) => {
           const effectiveCapacity = calculateEffectiveCapacity(station);
@@ -92,7 +92,7 @@ function FactoryDiagram({ line, requiredRatePerHour, simState }) {
           Overloaded
         </span>
       </div>
-    </div>
+    </section>
   );
 }
 

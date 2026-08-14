@@ -1,11 +1,7 @@
 // src/components/TaktTimePanel.jsx
 import { calculateTaktTime, findTaktTimeProblemStations } from '../calculations/taktTime';
-
-// Lets the user enter available production time (in hours, for convenience)
-// and customer demand (units), then shows the resulting takt time and
-// flags any stations whose cycle time exceeds it.
-// State now lives in App.jsx so other components (like utilization) can
-// also use availableHours/customerDemand.
+import SectionHeader from './SectionHeader';
+import Tooltip from './Tooltip';
 
 function TaktTimePanel({ line, availableHours, setAvailableHours, customerDemand, setCustomerDemand }) {
   const availableSeconds = availableHours * 3600;
@@ -13,12 +9,18 @@ function TaktTimePanel({ line, availableHours, setAvailableHours, customerDemand
   const problemStations = findTaktTimeProblemStations(line, taktTimeSeconds);
 
   return (
-    <div className="takt-panel">
-      <h2>Takt Time</h2>
+    <section id="takt-time" className="takt-panel">
+      <SectionHeader
+        title="Takt Time"
+        description="The pace the line needs to keep to exactly meet customer demand — set your available time and demand below."
+      />
 
       <div className="takt-panel__inputs">
         <div className="station-card__field">
-          <label>Available production time (hours/day)</label>
+          <label>
+            Available production time (hours/day)
+            <Tooltip text="Total scheduled production time per day, e.g. an 8-hour shift." />
+          </label>
           <input
             type="number"
             min="0"
@@ -28,7 +30,10 @@ function TaktTimePanel({ line, availableHours, setAvailableHours, customerDemand
           />
         </div>
         <div className="station-card__field">
-          <label>Customer demand (units/day)</label>
+          <label>
+            Customer demand (units/day)
+            <Tooltip text="How many units the customer wants produced per day." />
+          </label>
           <input
             type="number"
             min="0"
@@ -60,7 +65,7 @@ function TaktTimePanel({ line, availableHours, setAvailableHours, customerDemand
           ✓ Every station's cycle time is within takt time.
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

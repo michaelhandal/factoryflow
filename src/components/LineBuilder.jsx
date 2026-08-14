@@ -2,7 +2,7 @@
 import StationCard from './StationCard';
 import { identifyBottleneck } from '../calculations/bottleneck';
 import { calculateLineEfficiency } from '../calculations/lineEfficiency';
-
+import SectionHeader from './SectionHeader';
 // Renders the full list of workstations plus an "Add Station" button.
 // Owns no state itself — it receives the line and reports changes upward,
 // so App.jsx remains the single source of truth for the production line.
@@ -48,9 +48,12 @@ function LineBuilder({ line, onLineChange, requiredRatePerHour }) {
   }
 
   return (
-    <div className="line-builder">
+    <section id="line-builder" className="line-builder">
+      <SectionHeader
+        title="Production Line Builder"
+        description="Add, remove, reorder, and edit every workstation — every calculation on this page updates live from these values."
+      />
       <div className="line-builder__header">
-        <h2>Production Line Builder</h2>
         <button className="btn-primary" onClick={handleAddStation}>
           + Add Station
         </button>
@@ -89,7 +92,7 @@ function LineBuilder({ line, onLineChange, requiredRatePerHour }) {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 

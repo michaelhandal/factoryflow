@@ -11,23 +11,16 @@ import CostPanel from './components/CostPanel';
 import OptimizationPanel from './components/OptimizationPanel';
 import ScenarioPanel from './components/ScenarioPanel';
 import AnalyticsPanel from './components/AnalyticsPanel';
+import SectionNav from './components/SectionNav';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
 import { useSimulation } from './hooks/useSimulation';
 
 function App() {
-  // The production line lives here, at the top of the app, so that later
-  // phases (dashboard, visualization, simulation) can all read from and
-  // write to this same single source of truth.
   const [line, setLine] = useState(createDefaultLine());
-
-  // Takt-time inputs also live here, since utilization (in LineBuilder and
-  // FactoryDiagram) needs the same required-rate value that TaktTimePanel
-  // calculates from.
   const [availableHours, setAvailableHours] = useState(8);
   const [customerDemand, setCustomerDemand] = useState(480);
 
   const requiredRatePerHour = calculateRequiredRatePerHour(customerDemand, availableHours);
-
   const simulation = useSimulation(line, requiredRatePerHour);
 
   return (
@@ -38,6 +31,8 @@ function App() {
           <span className="app-header__tagline">Simulate. Analyze. Optimize.</span>
         </div>
       </header>
+
+      <SectionNav />
 
       <main className="app-main">
         <Dashboard line={line} wip={simulation.totalWIP} />

@@ -1,6 +1,6 @@
 // src/components/CostPanel.jsx
 import { buildCostBreakdown } from '../calculations/cost';
-
+import SectionHeader from './SectionHeader';
 // Shows the full cost breakdown: total hourly cost, cost per unit, cost
 // per good unit, cost of defects, and a per-station cost table.
 
@@ -8,8 +8,11 @@ function CostPanel({ line }) {
   const cost = buildCostBreakdown(line);
 
   return (
-    <div className="cost-panel">
-      <h2>Cost Model</h2>
+    <section id="cost" className="cost-panel">
+      <SectionHeader
+        title="Cost Model"
+        description="Operating cost breakdown, including the hidden cost of scrapped defective units."
+      />
 
       <div className="cost-panel__summary">
         <div className="cost-panel__summary-item">
@@ -56,7 +59,7 @@ function CostPanel({ line }) {
       <p className="cost-panel__note">
         This model reflects only machine and labor cost per hour, as tracked in the station data — no per-unit material cost is included yet (see project limitations).
       </p>
-    </div>
+    </section>
   );
 }
 
