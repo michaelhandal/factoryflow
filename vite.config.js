@@ -1,12 +1,11 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// The base path MUST match your GitHub repo name exactly, since GitHub
+// Pages serves project sites from https://username.github.io/repo-name/
+// rather than the domain root.
 export default defineConfig({
   plugins: [react()],
-  server: {
-    host: '0.0.0.0', // Explicitly binds to all network interfaces inside Codespaces
-    port: 5173,
-    strictPort: true,
-  }
+  base: '/factoryflow/',
 })
