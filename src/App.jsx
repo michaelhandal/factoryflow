@@ -27,7 +27,7 @@ function App() {
     <>
       <header className="app-header">
         <div className="app-header__brand">
-          <span className="app-header__title">FactoryFlow</span>
+          <span className="app-header__title">Factory Flow</span>
           <span className="app-header__tagline">Simulate. Analyze. Optimize.</span>
         </div>
       </header>
