@@ -10,6 +10,7 @@ import SimulationPanel from './components/SimulationPanel';
 import CostPanel from './components/CostPanel';
 import OptimizationPanel from './components/OptimizationPanel';
 import ScenarioPanel from './components/ScenarioPanel';
+import AnalyticsPanel from './components/AnalyticsPanel';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
 import { useSimulation } from './hooks/useSimulation';
 
@@ -51,6 +52,11 @@ function App() {
           line={line}
           requiredRatePerHour={requiredRatePerHour}
           simState={simulation.simState}
+        />
+        <AnalyticsPanel
+          line={line}
+          requiredRatePerHour={requiredRatePerHour}
+          wipHistory={simulation.wipHistory}
         />
         <OptimizationPanel line={line} onApply={setLine} />
         <ScenarioPanel line={line} />
