@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import SimulationPanel from './components/SimulationPanel';
 import CostPanel from './components/CostPanel';
 import OptimizationPanel from './components/OptimizationPanel';
+import ScenarioPanel from './components/ScenarioPanel';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
 import { useSimulation } from './hooks/useSimulation';
 
@@ -52,6 +53,7 @@ function App() {
           simState={simulation.simState}
         />
         <OptimizationPanel line={line} onApply={setLine} />
+        <ScenarioPanel line={line} />
         <SimulationPanel
           line={line}
           simState={simulation.simState}
