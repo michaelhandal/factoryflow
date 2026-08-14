@@ -2,6 +2,7 @@
 import { identifyBottleneck } from './bottleneck';
 import { calculateLineEfficiency } from './lineEfficiency';
 import { calculateLineOEE } from './oee';
+import { calculateCostPerUnit } from './cost';
 
 /**
  * calculateThroughput
@@ -37,8 +38,8 @@ export function calculateAverageCycleTime(line) {
  * buildDashboardMetrics
  *
  * Aggregates all line-level metrics into one object for the dashboard.
- * `wip` now comes from the live simulation engine (Phase 8). `costPerUnit`
- * is still a placeholder — it's added in Phase 11 (Cost Model).
+ * `wip` comes from the live simulation engine (Phase 8). `costPerUnit`
+ * now comes from the real cost model (Phase 11).
  *
  * @param {object[]} line - array of workstation objects
  * @param {number|null} wip - current work-in-progress from the simulation, or null if unavailable
@@ -55,6 +56,6 @@ export function buildDashboardMetrics(line, wip = null) {
     bottleneckName: bottleneck ? bottleneck.name : '—',
     wip,
     averageCycleTime: calculateAverageCycleTime(line),
-    costPerUnit: null, // added in Phase 11 (Cost Model)
+    costPerUnit: calculateCostPerUnit(line),
   };
 }

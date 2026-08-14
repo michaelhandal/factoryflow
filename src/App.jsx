@@ -7,6 +7,7 @@ import TaktTimePanel from './components/TaktTimePanel';
 import FactoryDiagram from './components/FactoryDiagram';
 import Dashboard from './components/Dashboard';
 import SimulationPanel from './components/SimulationPanel';
+import CostPanel from './components/CostPanel';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
 import { useSimulation } from './hooks/useSimulation';
 
@@ -60,6 +61,7 @@ function App() {
           reset={simulation.reset}
           totalWIP={simulation.totalWIP}
         />
+        <CostPanel line={line} />
         <LineBuilder
           line={line}
           onLineChange={setLine}

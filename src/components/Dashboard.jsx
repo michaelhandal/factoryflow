@@ -61,12 +61,9 @@ function Dashboard({ line, wip }) {
         />
         <MetricCard
           label="Cost per Unit"
-          value={metrics.costPerUnit === null ? '—' : `$${metrics.costPerUnit.toFixed(2)}`}
+          value={`$${metrics.costPerUnit.toFixed(2)}`}
         />
       </div>
-      <p className="dashboard__note">
-        Cost per Unit will become live once the Cost Model is added in a later phase.
-      </p>
     </div>
   );
 }
