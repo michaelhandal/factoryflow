@@ -18,8 +18,6 @@ export function useSimulation(line, requiredRatePerHour) {
   const [isRunning, setIsRunning] = useState(false);
   const [speed, setSpeed] = useState(1);
 
-  // Refs let the interval callback always see the CURRENT line/rate/speed,
-  // without needing to tear down and recreate the interval on every change.
   const lineRef = useRef(line);
   useEffect(() => { lineRef.current = line; }, [line]);
 

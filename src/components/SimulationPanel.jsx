@@ -2,8 +2,8 @@
 import WipIndicator from './WipIndicator';
 
 // Displays simulation controls (Start/Pause/Reset/Speed) plus a live
-// per-station breakdown of what's queued (visualized as blocks) vs.
-// being processed right now.
+// per-station breakdown of what's queued (visualized as blocks), being
+// processed, and rejected as defective right now.
 
 function formatSimTime(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);
@@ -13,6 +13,11 @@ function formatSimTime(totalSeconds) {
 }
 
 function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pause, reset, totalWIP }) {
+  const totalProcessed = simState.completedCount + simState.totalDefectiveCount;
+  const observedQualityRate = totalProcessed > 0
+    ? simState.completedCount / totalProcessed
+    : 1;
+
   return (
     <div className="simulation-panel">
       <div className="simulation-panel__header">
@@ -43,8 +48,18 @@ function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pa
           <span className="simulation-panel__stat-value">{formatSimTime(simState.simulatedSeconds)}</span>
         </div>
         <div className="simulation-panel__stat">
-          <span className="simulation-panel__stat-label">Units Completed</span>
+          <span className="simulation-panel__stat-label">Good Units</span>
           <span className="simulation-panel__stat-value">{simState.completedCount}</span>
+        </div>
+        <div className="simulation-panel__stat">
+          <span className="simulation-panel__stat-label">Defective (Scrap)</span>
+          <span className="simulation-panel__stat-value simulation-panel__stat-value--danger">
+            {simState.totalDefectiveCount}
+          </span>
+        </div>
+        <div className="simulation-panel__stat">
+          <span className="simulation-panel__stat-label">Observed Quality Rate</span>
+          <span className="simulation-panel__stat-value">{(observedQualityRate * 100).toFixed(1)}%</span>
         </div>
         <div className="simulation-panel__stat">
           <span className="simulation-panel__stat-label">Total WIP</span>
@@ -54,7 +69,7 @@ function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pa
 
       <div className="simulation-panel__stations">
         {line.map((station) => {
-          const s = simState.stations[station.id] || { queue: 0, inProgress: [] };
+          const s = simState.stations[station.id] || { queue: 0, inProgress: [], defectiveCount: 0 };
           return (
             <div className="simulation-panel__station-row" key={station.id}>
               <div className="simulation-panel__station-row-header">
@@ -62,6 +77,11 @@ function SimulationPanel({ line, simState, isRunning, speed, setSpeed, start, pa
                 <span className="simulation-panel__station-detail">
                   Processing: <strong>{s.inProgress.length}</strong> / {station.machines} machines busy
                 </span>
+                {s.defectiveCount > 0 && (
+                  <span className="simulation-panel__station-detail simulation-panel__station-detail--danger">
+                    Rejected: <strong>{s.defectiveCount}</strong>
+                  </span>
+                )}
               </div>
               <WipIndicator queueCount={s.queue} />
             </div>

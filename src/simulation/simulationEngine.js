@@ -5,7 +5,7 @@
  *
  * Builds the initial simulation state: every station starts empty (no
  * queue, no units in progress), the clock is at zero, and nothing has
- * been completed yet.
+ * been completed, passed, or rejected yet.
  *
  * @param {object[]} line - array of workstation objects
  * @returns {object} initial simulation state
@@ -13,12 +13,13 @@
 export function createSimulationState(line) {
   const stations = {};
   for (const station of line) {
-    stations[station.id] = { queue: 0, inProgress: [] };
+    stations[station.id] = { queue: 0, inProgress: [], defectiveCount: 0 };
   }
   return {
     simulatedSeconds: 0,
     timeSinceLastArrival: 0,
-    completedCount: 0,
+    completedCount: 0, // good units that reached the end of the line
+    totalDefectiveCount: 0, // units scrapped at any station, across the whole line
     stations,
   };
 }
@@ -27,30 +28,38 @@ export function createSimulationState(line) {
  * stepSimulation
  *
  * Advances the simulation by one tick of dtSeconds. This is a PURE
- * function — given the same inputs it always returns the same new state,
- * with no side effects. That makes it easy to test independently of React.
+ * function given a supplied random number generator — same inputs plus
+ * same sequence of random draws always produce the same output, which
+ * keeps it testable. In normal use, Math.random is passed in.
+ *
+ * When a unit finishes a station, it has a defectRate chance of being
+ * rejected (scrapped) instead of moving to the next station — this is
+ * the simulation's one deliberately stochastic element, representing
+ * real-world quality variation.
  *
  * @param {object} state - current simulation state
  * @param {object[]} line - array of workstation objects, in process order
  * @param {number} dtSeconds - how many simulated seconds this tick represents
  * @param {number} arrivalIntervalSeconds - seconds between new raw-material
  *   arrivals into the first station (derived from required production rate)
+ * @param {() => number} randomFn - random number generator returning [0, 1); defaults to Math.random
  * @returns {object} the new simulation state after this tick
  */
-export function stepSimulation(state, line, dtSeconds, arrivalIntervalSeconds) {
-  // Copy every station's queue/inProgress so we never mutate the old state.
+export function stepSimulation(state, line, dtSeconds, arrivalIntervalSeconds, randomFn = Math.random) {
   const stations = {};
   for (const station of line) {
-    const prev = state.stations[station.id] || { queue: 0, inProgress: [] };
+    const prev = state.stations[station.id] || { queue: 0, inProgress: [], defectiveCount: 0 };
     stations[station.id] = {
       queue: prev.queue,
       inProgress: prev.inProgress.map((slot) => ({ ...slot })),
+      defectiveCount: prev.defectiveCount,
     };
   }
 
   let simulatedSeconds = state.simulatedSeconds + dtSeconds;
   let timeSinceLastArrival = state.timeSinceLastArrival;
   let completedCount = state.completedCount;
+  let totalDefectiveCount = state.totalDefectiveCount;
 
   // Feed new raw-material units into the first station at a steady rate.
   if (arrivalIntervalSeconds > 0 && line.length > 0) {
@@ -79,12 +88,23 @@ export function stepSimulation(state, line, dtSeconds, arrivalIntervalSeconds) {
     }
     s.inProgress = stillInProgress;
 
-    // Completed units move to the next station's queue, or finish the line.
-    if (justCompleted > 0) {
-      if (i === line.length - 1) {
-        completedCount += justCompleted;
+    // Each completed unit is checked against this station's defect rate.
+    // Failures are scrapped (removed from the system); passes continue on.
+    let goodUnits = 0;
+    for (let u = 0; u < justCompleted; u++) {
+      if (randomFn() < station.defectRate) {
+        s.defectiveCount += 1;
+        totalDefectiveCount += 1;
       } else {
-        stations[line[i + 1].id].queue += justCompleted;
+        goodUnits += 1;
+      }
+    }
+
+    if (goodUnits > 0) {
+      if (i === line.length - 1) {
+        completedCount += goodUnits;
+      } else {
+        stations[line[i + 1].id].queue += goodUnits;
       }
     }
 
@@ -95,15 +115,15 @@ export function stepSimulation(state, line, dtSeconds, arrivalIntervalSeconds) {
     }
   }
 
-  return { simulatedSeconds, timeSinceLastArrival, completedCount, stations };
+  return { simulatedSeconds, timeSinceLastArrival, completedCount, totalDefectiveCount, stations };
 }
 
 /**
  * calculateTotalWIP
  *
  * WIP = every unit currently in the system (waiting in a queue, or being
- * processed) but not yet finished. This is a direct count from the live
- * simulation state — not a formula-based estimate.
+ * processed) but not yet finished or scrapped. This is a direct count
+ * from the live simulation state — not a formula-based estimate.
  *
  * @param {object} state - current simulation state
  * @param {object[]} line - array of workstation objects

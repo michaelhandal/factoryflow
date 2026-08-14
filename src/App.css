@@ -823,3 +823,17 @@
   color: var(--color-warning);
   font-weight: 600;
 }
+
+/* --- Quality / defect stats --- */
+
+.simulation-panel__stat-value--danger {
+  color: var(--color-danger);
+}
+
+.simulation-panel__station-detail--danger {
+  color: var(--color-danger);
+}
+
+.simulation-panel__station-detail--danger strong {
+  color: var(--color-danger);
+}
