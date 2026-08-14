@@ -4,6 +4,7 @@ import './App.css';
 import { createDefaultLine } from './data/defaultLine';
 import LineBuilder from './components/LineBuilder';
 import TaktTimePanel from './components/TaktTimePanel';
+import FactoryDiagram from './components/FactoryDiagram';
 import { calculateRequiredRatePerHour } from './calculations/utilization';
 
 function App() {
@@ -12,8 +13,9 @@ function App() {
   // write to this same single source of truth.
   const [line, setLine] = useState(createDefaultLine());
 
-  // Takt-time inputs also live here now, since utilization (in LineBuilder)
-  // needs the same required-rate value that TaktTimePanel calculates from.
+  // Takt-time inputs also live here, since utilization (in LineBuilder and
+  // FactoryDiagram) needs the same required-rate value that TaktTimePanel
+  // calculates from.
   const [availableHours, setAvailableHours] = useState(8);
   const [customerDemand, setCustomerDemand] = useState(480);
 
@@ -36,6 +38,7 @@ function App() {
           customerDemand={customerDemand}
           setCustomerDemand={setCustomerDemand}
         />
+        <FactoryDiagram line={line} requiredRatePerHour={requiredRatePerHour} />
         <LineBuilder
           line={line}
           onLineChange={setLine}
